@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Tienda de Amor y Amistad - CODUNI</title>
+    <meta name="description" content="Un espacio cálido para encontrar productos y regalos de amor, amistad y reconciliación.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ======================================================================= */
+        /* ==================== NUEVA TEMÁTICA: AMOR Y AMISTAD ================= */
+        /* ======================================================================= */
+        :root {
+            /* Paleta de colores cálida y romántica */
+            --color-primario: #e91e63; /* Rosa vibrante */
+            --color-secundario: #f8bbd0; /* Rosa pastel */
+            --color-fondo-inicio: #fff1f2; /* Crema rosado muy claro */
+            --color-fondo-fin: #ffe4e8; /* Rosa pálido */
+            --color-tarjeta-fondo: rgba(255, 255, 255, 0.8);
+            --color-tarjeta-borde: #fde4ec;
+            --color-texto-principal: #5c2c3b; /* Marrón rojizo oscuro */
+            --color-texto-secundario: #8d6375;
+            --color-sombra: rgba(233, 30, 99, 0.15);
+            --borde-radio: 16px;
+            --fuente-principal: 'Poppins', sans-serif;
+            --fuente-titulos: 'Playfair Display', serif; /* Fuente elegante para títulos */
+            
+            --ancho-tarjeta: 310px;
+            --alto-tarjeta: 400px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--fuente-principal);
+            background: linear-gradient(135deg, var(--color-fondo-inicio), var(--color-fondo-fin));
+            background-attachment: fixed;
+            color: var(--color-texto-principal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ======================================================================= */
+        /* =================== FONDO ANIMADO DE CORAZONES ====================== */
+        /* ======================================================================= */
+        .corazones-fondo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* Detrás de todo el contenido */
+        }
+
+        .corazon {
+            position: absolute;
+            bottom: -100px; /* Inician fuera de la pantalla */
+            background-color: var(--color-primario);
+            animation: flotar 25s infinite;
+            opacity: 0;
+        }
+
+        /* Forma de corazón con CSS */
+        .corazon::before,
+        .corazon::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-primario);
+            border-radius: 50%;
+        }
+        .corazon::before { top: -50%; left: 0; }
+        .corazon::after { top: 0; left: -50%; }
+
+        @keyframes flotar {
+            0% {
+                transform: translateY(0) rotate(-45deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Variaciones para un efecto más natural */
+        .corazon:nth-child(1) { left: 10%; width: 20px; height: 20px; animation-duration: 15s; animation-delay: 0s; }
+        .corazon:nth-child(2) { left: 20%; width: 15px; height: 15px; animation-duration: 20s; animation-delay: 2s; opacity: 0.3; }
+        .corazon:nth-child(3) { left: 30%; width: 25px; height: 25px; animation-duration: 25s; animation-delay: 5s; }
+        .corazon:nth-child(4) { left: 40%; width: 10px; height: 10px; animation-duration: 18s; animation-delay: 1s; opacity: 0.4; }
+        .corazon:nth-child(5) { left: 50%; width: 30px; height: 30px; animation-duration: 12s; animation-delay: 3s; }
+        .corazon:nth-child(6) { left: 60%; width: 18px; height: 18px; animation-duration: 22s; animation-delay: 6s; }
+        .corazon:nth-child(7) { left: 70%; width: 12px; height: 12px; animation-duration: 17s; animation-delay: 4s; opacity: 0.5; }
+        .corazon:nth-child(8) { left: 80%; width: 22px; height: 22px; animation-duration: 19s; animation-delay: 8s; }
+        .corazon:nth-child(9) { left: 90%; width: 16px; height: 16px; animation-duration: 24s; animation-delay: 7s; }
+        .corazon:nth-child(10) { left: 5%; width: 14px; height: 14px; animation-duration: 16s; animation-delay: 9s; opacity: 0.3; }
+        .corazon:nth-child(11) { left: 95%; width: 28px; height: 28px; animation-duration: 28s; animation-delay: 1s; }
+        .corazon:nth-child(12) { left: 45%; width: 19px; height: 19px; animation-duration: 14s; animation-delay: 10s; }
+
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        
+        .header {
+            background-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px);
+            padding: 15px 30px; border-bottom: 1px solid var(--color-tarjeta-borde);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 20px; position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-family: var(--fuente-titulos); font-size: 2.2em; font-weight: 700; color: var(--color-primario); text-decoration: none; }
+        .controles-busqueda { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .input-estilizado { background-color: #fff; border: 1px solid var(--color-secundario); color: var(--color-texto-principal); border-radius: var(--borde-radio); padding: 10px 15px; transition: all 0.3s ease; }
+        .input-estilizado:focus { outline: none; border-color: var(--color-primario); box-shadow: 0 0 10px var(--color-sombra); }
+        #buscador { width: 250px; padding-left: 40px; }
+        .buscador-wrapper { position: relative; }
+        .buscador-wrapper::before { content: '💖'; position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.7; }
+        #ordenar { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e91e63' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 10px center; background-size: 1.2em; padding-right: 35px; }
+        
+        #product-grid { display: grid; grid-template-columns: repeat(auto-fill, var(--ancho-tarjeta)); gap: 30px; padding: 40px 0; justify-content: center; }
+        
+        .product-card {
+            width: var(--ancho-tarjeta); height: var(--alto-tarjeta);
+            background: var(--color-tarjeta-fondo); border: 1px solid var(--color-tarjeta-borde);
+            border-radius: var(--borde-radio); backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px 0 var(--color-sombra);
+            overflow: hidden; display: flex; flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; cursor: pointer;
+            opacity: 0; animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 12px 40px var(--color-sombra); }
+
+        .card-media-container { width: 100%; height: 50%; overflow: hidden; position: relative; background-color: #fce4ec; }
+        .card-media-container .card-media { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease-out; }
+        .product-card:hover .card-media { transform: scale(1.1); }
+        .card-price { position: absolute; bottom: 10px; right: 10px; background-color: var(--color-primario); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.9em; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        .card-content { padding: 20px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; overflow: hidden; }
+        .card-title { font-family: var(--fuente-titulos); font-size: 1.4em; font-weight: 700; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--color-texto-principal); }
+        .card-description { font-size: 0.9em; color: var(--color-texto-secundario); flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-button { margin-top: 15px; width: 100%; padding: 12px; border: none; background-color: var(--color-primario); color: #fff; border-radius: var(--borde-radio); font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; transition: all 0.3s ease; }
+        .card-button:hover { background-color: #c2185b; /* Rosa más oscuro */ transform: scale(1.05); }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 237, 242, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0s 0.4s; }
+        .modal-overlay.visible { opacity: 1; visibility: visible; transition: opacity 0.4s ease; }
+        @keyframes modal-anim-in { from { transform: translateY(-50px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+        .modal-container { background: #ffffff; max-width: 800px; width: 90%; max-height: 90vh; border-radius: var(--borde-radio); border: 1px solid var(--color-secundario); box-shadow: 0 10px 30px var(--color-sombra); display: flex; flex-direction: column; opacity: 0; }
+        .modal-overlay.visible .modal-container { animation: modal-anim-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid var(--color-tarjeta-borde); }
+        #modal-title, #terms-modal-title { font-family: var(--fuente-titulos); font-size: 2em; font-weight: 700; color: var(--color-primario); }
+        .modal-close-button { font-size: 2em; background: none; border: none; cursor: pointer; color: var(--color-texto-secundario); line-height: 1; transition: color 0.3s, transform 0.3s; }
+        .modal-close-button:hover { color: var(--color-primario); transform: rotate(90deg); }
+        
+        .modal-body { padding: 25px; overflow-y: auto; }
+        /* Estilos para el contenido del modal de términos */
+        .modal-body h3 { font-family: var(--fuente-titulos); margin-top: 20px; margin-bottom: 10px; color: var(--color-texto-principal); }
+        .modal-body p { margin-bottom: 15px; }
+        .modal-body ul { margin-left: 20px; margin-bottom: 15px; }
+        .modal-body li { margin-bottom: 8px; }
+
+        .modal-media-container { width: 100%; margin-bottom: 25px; position: relative; }
+        #modal-image, #modal-video { width: 100%; max-height: 500px; border-radius: var(--borde-radio); display: none; }
+        #modal-description { color: var(--color-texto-principal); margin-bottom: 25px; font-size: 1.05em; }
+        .modal-button { display: inline-block; padding: 12px 25px; background-color: #25D366; color: #fff; text-decoration: none; border-radius: var(--borde-radio); font-weight: 600; text-align: center; transition: all 0.3s ease; align-self: flex-start; }
+        .modal-button:hover { background-color: #128C7E; transform: scale(1.05); }
+
+        /* ===== ESTILO DE MARCA DE AGUA ACTUALIZADO ===== */
+        .watermark-overlay::after {
+            content: 'Prohibida su reproducción sin autorización';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            z-index: 5;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.4em;
+            font-weight: 600;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.7);
+            pointer-events: none; /* MUY IMPORTANTE: Permite interactuar con el video */
+            font-family: var(--fuente-principal);
+            text-align: center;
+            line-height: 1.2;
+        }
+        /* Ajuste para que la marca de agua sea más pequeña en las tarjetas */
+        .product-card .watermark-overlay::after {
+            font-size: 1em;
+            font-weight: 500;
+        }
+        
+        #pagination { display: flex; justify-content: center; align-items: center; padding: 30px 0; gap: 10px; }
+        .page-btn { padding: 10px 18px; border: 1px solid var(--color-secundario); background-color: #fff; color: var(--color-primario); cursor: pointer; border-radius: 10px; transition: all 0.3s ease; }
+        .page-btn:hover:not(:disabled) { background-color: var(--color-secundario); color: var(--color-texto-principal); }
+        .page-btn.active { background-color: var(--color-primario); color: #fff; border-color: var(--color-primario); }
+        .page-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+
+        .footer { background-color: transparent; text-align: center; padding: 40px 20px; margin-top: 40px; color: var(--color-texto-secundario); }
+        .footer a { color: var(--color-primario); text-decoration: none; transition: color 0.3s ease; cursor: pointer; }
+        .footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .controles-busqueda, #buscador, #ordenar { width: 100%; }
+            #product-grid { grid-template-columns: 1fr; gap: 25px; }
+            .product-card { width: 100%; }
+            #modal-title, #terms-modal-title { font-size: 1.5em; }
+            .watermark-overlay::after { font-size: 1.1em; }
+            .product-card .watermark-overlay::after { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="corazones-fondo">
+        <div class="corazon"></div><div class="corazon"></div><div class="corazon"></div>
+        <div class="corazon"></div><div class="corazon"></div><div class="corazon"></div>
+        <div class="corazon"></div><div class="corazon"></div><div class="corazon"></div>
+        <div class="corazon"></div><div class="corazon"></div><div class="corazon"></div>
+    </div>
+
+    <header class="header">
+        <a href="#" class="logo">CODUNI</a>
+        <div class="controles-busqueda">
+            <div class="buscador-wrapper">
+                <input type="text" id="buscador" class="input-estilizado" placeholder="Buscar un regalo...">
+            </div>
+            <select id="ordenar" class="input-estilizado">
+                <option value="recientes">Más recientes</option>
+                <option value="a-z">Nombre (A-Z)</option>
+                <option value="z-a">Nombre (Z-A)</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="product-grid"></div>
+        <div id="pagination"></div>
+    </main>
+    
+    <div id="modal" class="modal-overlay">
+        <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <header class="modal-header">
+                <h2 id="modal-title">Título del Producto</h2>
+                <button class="modal-close-button" aria-label="Cerrar modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="modal-media-container watermark-overlay">
+                    <img id="modal-image" src="" alt="Imagen del producto">
+                    <video id="modal-video" src="" controls></video>
+                </div>
+                <p id="modal-description">Aquí va la descripción completa del producto.</p>
+                <a id="modal-whatsapp-button" class="modal-button" href="#" target="_blank" rel="noopener noreferrer">
+                    Consultar por WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="terms-modal" class="modal-overlay">
+        <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title">
+            <header class="modal-header">
+                <h2 id="terms-modal-title"></h2>
+                <button class="modal-close-button" aria-label="Cerrar modal">&times;</button>
+            </header>
+            <div id="terms-modal-body" class="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 CODUNI con amor. Todos los derechos reservados.</p>
+        <p><a id="open-policies-link">Políticas de Reconciliación</a> | <a id="open-terms-link">Términos del Corazón</a></p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // =======================================================================
+        // ================== CONFIGURACIÓN PRINCIPAL (EDITAR AQUÍ) ================
+        // =======================================================================
+        const numeroWhatsapp = '51918072862';
+        const productosPorPagina = 12;
+        
+        // =======================================================================
+        // ========== DATOS DE LOS PRODUCTOS / TABLEROS (EDITAR AQUÍ) ============
+        // =======================================================================
+        const productos = [
+            {
+                id: 1,
+                tipo: 'video', // 'imagen' o 'video'
+                media: '1.mp4', // nombre del archivo de video
+                titulo: "Mensaje en Video Sorpresa",
+                descripcion: "Un video personalizado con tus fotos, música y un mensaje especial para esa persona que tanto quieres. Ideal para aniversarios, reconciliaciones o simplemente para decir 'te quiero'.",
+                descripcionCorta: "Video personalizado con tus fotos y música favorita.",
+                precio: "S/ 150"
+            },
+            {
+                id: 2,
+                tipo: 'video', // 'imagen' o 'video'
+                media: '2.mp4', // nombre del archivo de imagen
+                titulo: "Ramo de Rosas Eternas",
+                descripcion: "Un hermoso ramo con rosas preservadas que durarán años, simbolizando un amor que no se marchita. Viene en una caja de lujo con una tarjeta para tu dedicatoria.",
+                descripcionCorta: "Rosas preservadas que simbolizan un amor eterno.",
+                precio: "S/ 250"
+            },
+            {
+                id: 3,
+                tipo: 'video',
+                media: '1.mp4',
+                titulo: "Caja de Desayuno Especial",
+                descripcion: "Empieza el día de esa persona especial con una sonrisa. Nuestra caja de desayuno incluye jugo natural, sándwiches, postres, un globo y una taza personalizada.",
+                descripcionCorta: "Desayuno sorpresa con todo para empezar un día feliz."
+            },
+            {
+                id: 4,
+                tipo: 'video',
+                media: '2.mp4',
+                titulo: "Pulseras de Conexión",
+                descripcion: "Set de dos pulseras con imanes que se atraen cuando están cerca. Un símbolo perfecto de la conexión y el vínculo que comparten, sin importar la distancia.",
+                descripcionCorta: "Dos pulseras con imanes que se atraen al estar cerca.",
+                precio: "S/ 80"
+            },
+            {
+                id: 5,
+                tipo: 'video',
+                media: '1.mp4',
+                titulo: "Serenata Virtual",
+                descripcion: "Contrata una serenata virtual en vivo. Un músico profesional interpretará las canciones que marcaron su historia a través de una videollamada privada y emocionante.",
+                descripcionCorta: "Un músico en vivo cantando sus canciones por videollamada."
+            },
+            {
+                id: 6,
+                tipo: 'video',
+                media: '2.mp4',
+                titulo: "Kit de Reconciliación",
+                descripcion: "A veces, un gesto vale más que mil palabras. Este kit incluye una carta para que escribas tus sentimientos, chocolates finos y una vela aromática para crear un momento de paz.",
+                descripcionCorta: "Un detalle pensado para pedir perdón y reconciliarse."
+            },
+            {
+                id: 7,
+                tipo: 'video',
+                media: '1.mp4',
+                titulo: "uuuuuuuuuuuuuu",
+                descripcion: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                descripcionCorta: "ddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+        ];
+
+        // =======================================================================
+        // ====================== FIN DE LA ZONA DE EDICIÓN ======================
+        // =======================================================================
+
+        let estadoActual = { pagina: 1, filtro: '', orden: 'recientes' };
+        const grid = document.getElementById('product-grid');
+        const paginationContainer = document.getElementById('pagination');
+        const buscador = document.getElementById('buscador');
+        const selectorOrden = document.getElementById('ordenar');
+        
+        // --- Lógica para el modal de productos ---
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalImage = document.getElementById('modal-image');
+        const modalVideo = document.getElementById('modal-video');
+        const modalDescription = document.getElementById('modal-description');
+        const modalWhatsappBtn = document.getElementById('modal-whatsapp-button');
+        
+        function abrirModalProducto(producto) {
+            modalTitle.textContent = producto.titulo;
+            if (producto.tipo === 'video') {
+                modalImage.style.display = 'none';
+                modalVideo.style.display = 'block';
+                modalVideo.src = producto.media;
+                modalVideo.play();
+            } else {
+                modalVideo.style.display = 'none';
+                modalImage.style.display = 'block';
+                modalImage.src = producto.media || '';
+                modalImage.alt = `Imagen de ${producto.titulo}`;
+            }
+            modalDescription.textContent = producto.descripcion;
+            const mensaje = encodeURIComponent(`Hola, ¿me das información sobre "${producto.titulo}"?`);
+            modalWhatsappBtn.href = `https://wa.me/${numeroWhatsapp}?text=${mensaje}`;
+            modal.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarModalProducto() {
+            modal.classList.remove('visible');
+            document.body.style.overflow = '';
+            modalVideo.pause();
+            modalVideo.src = ''; 
+        }
+
+        modal.querySelector('.modal-close-button').addEventListener('click', cerrarModalProducto);
+        modal.addEventListener('click', e => e.target === modal && cerrarModalProducto());
+        
+        grid.addEventListener('click', e => {
+            const card = e.target.closest('.product-card');
+            if (card && !e.target.closest('.card-button')) {
+                const producto = productos.find(p => p.id === parseInt(card.dataset.id, 10));
+                if (producto) abrirModalProducto(producto);
+            }
+        });
+
+        function renderizarProductos() {
+            let productosFiltrados = productos.filter(p => p.titulo.toLowerCase().includes(estadoActual.filtro.toLowerCase()));
+            let productosOrdenados = [...productosFiltrados].sort((a, b) => {
+                if (estadoActual.orden === 'a-z') return a.titulo.localeCompare(b.titulo);
+                if (estadoActual.orden === 'z-a') return b.titulo.localeCompare(a.titulo);
+                return productos.indexOf(a) - productos.indexOf(b);
+            });
+            const inicio = (estadoActual.pagina - 1) * productosPorPagina;
+            const productosPaginados = productosOrdenados.slice(inicio, inicio + productosPorPagina);
+            grid.innerHTML = '';
+            if (productosPaginados.length === 0) {
+                grid.innerHTML = '<p>No encontramos regalos con ese nombre, ¡intenta de nuevo!</p>';
+            } else {
+                productosPaginados.forEach((producto, index) => {
+                    const mensaje = encodeURIComponent(`Hola, ¿me das información sobre "${producto.titulo}"?`);
+                    const enlaceWhatsapp = `https://wa.me/${numeroWhatsapp}?text=${mensaje}`;
+                    let mediaHTML = producto.tipo === 'video' 
+                        ? `<video class="card-media" src="${producto.media}" muted loop autoplay playsinline></video>`
+                        : `<img class="card-media" src="${producto.media || ''}" alt="Imagen de ${producto.titulo}" loading="lazy">`;
+                    
+                    const tarjeta = document.createElement('div');
+                    tarjeta.className = 'product-card';
+                    tarjeta.dataset.id = producto.id;
+                    tarjeta.setAttribute('role', 'button');
+                    tarjeta.tabIndex = 0;
+                    tarjeta.style.animationDelay = `${index * 80}ms`;
+                    tarjeta.innerHTML = `
+                        <div class="card-media-container watermark-overlay">
+                            ${mediaHTML}
+                            ${producto.precio ? `<span class="card-price">${producto.precio}</span>` : ''}
+                        </div>
+                        <div class="card-content">
+                            <div>
+                                <h3 class="card-title">${producto.titulo}</h3>
+                                <p class="card-description">${producto.descripcionCorta}</p>
+                            </div>
+                            <a href="${enlaceWhatsapp}" class="card-button" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+                                Me interesa
+                            </a>
+                        </div>`;
+                    grid.appendChild(tarjeta);
+                });
+            }
+            renderizarPaginacion(productosOrdenados.length);
+        }
+
+        function renderizarPaginacion(totalProductos) {
+            const totalPaginas = Math.ceil(totalProductos / productosPorPagina);
+            paginationContainer.innerHTML = '';
+            if (totalPaginas <= 1) return;
+            const crearBoton = (texto, pagina, deshabilitado = false) => {
+                const btn = document.createElement('button');
+                btn.innerHTML = texto;
+                btn.className = 'page-btn';
+                btn.disabled = deshabilitado;
+                if (pagina === estadoActual.pagina) btn.classList.add('active');
+                btn.addEventListener('click', () => { estadoActual.pagina = pagina; renderizarProductos(); });
+                return btn;
+            };
+            paginationContainer.appendChild(crearBoton('«', estadoActual.pagina - 1, estadoActual.pagina === 1));
+            for (let i = 1; i <= totalPaginas; i++) { paginationContainer.appendChild(crearBoton(i, i)); }
+            paginationContainer.appendChild(crearBoton('»', estadoActual.pagina + 1, estadoActual.pagina === totalPaginas));
+        }
+
+        buscador.addEventListener('input', e => { estadoActual.filtro = e.target.value; estadoActual.pagina = 1; renderizarProductos(); });
+        selectorOrden.addEventListener('change', e => { estadoActual.orden = e.target.value; estadoActual.pagina = 1; renderizarProductos(); });
+        renderizarProductos();
+
+
+        // --- Lógica para el modal de Términos y Políticas ---
+        const termsModal = document.getElementById('terms-modal');
+        const termsModalTitle = document.getElementById('terms-modal-title');
+        const termsModalBody = document.getElementById('terms-modal-body');
+        const openTermsLink = document.getElementById('open-terms-link');
+        const openPoliciesLink = document.getElementById('open-policies-link');
+
+        const termsContent = `
+            <h3>📑 TÉRMINOS Y CONDICIONES</h3>
+            <p><strong>Última actualización:</strong> ${new Date().toLocaleDateString('es-ES')}</p>
+            <p><strong>1. Objeto del Contrato</strong><br>Estos Términos y Condiciones regulan la compra y uso de productos digitales ofrecidos por el Vendedor (videos, plantillas, archivos de código, entre otros). Al realizar la compra, el Comprador declara haber leído, comprendido y aceptado íntegramente estos Términos.</p>
+            <p><strong>2. Naturaleza de los Productos</strong><br>Todos los bienes son digitales y se entregan mediante descarga, enlace, acceso en línea u otro medio electrónico. No se envían productos físicos bajo ninguna modalidad.</p>
+            <p><strong>3. Vigencia de los Productos Digitales</strong><br>El acceso a los Productos Digitales tiene una vigencia limitada. El acceso estará disponible como mínimo por dos (2) semanas y como máximo por un (1) mes contado desde la fecha de compra. Una vez vencido el plazo de vigencia, el Comprador perderá el acceso al enlace o al Producto Digital, sin derecho a reembolso.</p>
+            <p><strong>4. Compra y Pago</strong><br>La compra se considera efectiva una vez que el pago ha sido confirmado por los medios habilitados (Yape u otros). El Vendedor no está obligado a realizar la entrega hasta verificar la acreditación total del pago.</p>
+            <p><strong>5. Entrega de Productos</strong><br>Tras la confirmación del pago, el Vendedor entregará el Producto Digital dentro del plazo indicado en la página oficial o canal de venta. En caso de indisponibilidad técnica o error que impida la entrega, el Vendedor notificará al Comprador y podrá optar por: a) reprogramar la entrega, o b) devolver el monto íntegro abonado.</p>
+            <p><strong>6. Reembolsos y Devoluciones</strong><br>Debido a la naturaleza de los productos digitales, no existen devoluciones ni reembolsos una vez entregado el producto. El único caso en que procede un reembolso es cuando el Vendedor no pueda entregar el producto adquirido.</p>
+            <p><strong>7. Responsabilidad del Comprador</strong><br>El Comprador es responsable de asegurarse de que: a) El producto es compatible con su dispositivo o software. b) El producto corresponde a lo que realmente desea adquirir. El Vendedor no se responsabiliza si el producto no puede visualizarse, ejecutarse o utilizarse por limitaciones del dispositivo, falta de programas adecuados o configuraciones del Comprador.</p>
+            <p><strong>8. Condiciones sobre Personalización</strong><br>El producto entregado corresponde exactamente al que aparece en la publicación, video o paquete promocionado. Si el Comprador desea un producto adaptado o personalizado (ejemplo: cambiar textos, nombres, imágenes, videos o enlaces), este tendrá un costo adicional, el cual será acordado con el Vendedor. Únicamente se aceptarán cambios cuando la publicación expresamente lo indique, y solo en los términos detallados en dicha publicación.</p>
+            <p><strong>9. Derechos de Uso</strong><br>Los productos adquiridos son para uso personal, limitado y no transferible. Queda prohibida su reproducción, redistribución, reventa o modificación sin autorización expresa y por escrito del Vendedor.</p>
+            <p><strong>10. Limitación de Responsabilidad</strong><br>El Vendedor no se responsabiliza por daños indirectos, pérdida de datos, incompatibilidades técnicas ni perjuicios derivados del uso inadecuado del producto. La responsabilidad máxima del Vendedor, en cualquier caso, se limita al importe pagado por el producto objeto de reclamo.</p>
+            <p><strong>11. Ley Aplicable y Jurisdicción</strong><br>Estos Términos se rigen por las leyes de la República del Perú. Cualquier controversia será resuelta por los tribunales competentes de Lima, salvo disposición legal imperativa en contrario.</p>
+        `;
+
+        const policiesContent = `
+            <h3>📜 POLÍTICAS DE SERVICIO</h3>
+            <p><strong>Política de Entrega</strong><br>La entrega se realiza únicamente por medios digitales. Una vez pagado el producto, el Comprador recibirá el acceso o archivo en el plazo indicado.</p>
+            <p><strong>Política de Vigencia</strong><br>Todos los accesos a Productos Digitales tendrán una duración limitada:<br>Mínimo: 2 semanas<br>Máximo: 1 mes<br>Al finalizar el plazo de vigencia, el acceso se desactiva automáticamente y el Comprador no podrá reclamar continuidad, renovación gratuita ni reembolso.</p>
+            <p><strong>Política de Devoluciones</strong><br>No se realizan devoluciones ni cambios después de la entrega del producto digital. Únicamente en caso de que el Vendedor no pueda entregar lo adquirido, se procederá con el reembolso total.</p>
+            <p><strong>Política de Compatibilidad</strong><br>El Comprador debe verificar previamente la compatibilidad del producto con su dispositivo o software. El Vendedor no se responsabiliza por fallas de visualización, instalación o ejecución debido a limitaciones técnicas del dispositivo del Comprador.</p>
+            <p><strong>Política de Personalización</strong><br>El producto entregado es idéntico al mostrado en la publicación o video promocional. Si el Comprador requiere un producto personalizado (ejemplo: modificaciones en textos, enlaces, imágenes o videos), deberá pagar un costo adicional, el cual será acordado previamente. Solo se realizarán cambios cuando la publicación lo indique expresamente y se limitarán a los ajustes descritos en la misma.</p>
+            <p><strong>Política de Contacto y Soporte</strong><br>Para reclamos o incidencias, el Comprador deberá comunicarse dentro de las 48 horas siguientes a la compra a través de los canales oficiales de contacto publicados. El soporte se limita a la entrega y acceso del producto adquirido; no incluye personalización, instalación ni asesorías técnicas adicionales salvo acuerdo previo.</p>
+        `;
+
+        function openTermsModal(type) {
+            if (type === 'terms') {
+                termsModalTitle.textContent = 'Términos del Corazón';
+                termsModalBody.innerHTML = termsContent;
+            } else {
+                termsModalTitle.textContent = 'Políticas de Reconciliación';
+                termsModalBody.innerHTML = policiesContent;
+            }
+            termsModal.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+            termsModalBody.scrollTop = 0; // Para que el scroll inicie arriba
+        }
+
+        function closeTermsModal() {
+            termsModal.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        openTermsLink.addEventListener('click', () => openTermsModal('terms'));
+        openPoliciesLink.addEventListener('click', () => openTermsModal('policies'));
+        
+        termsModal.querySelector('.modal-close-button').addEventListener('click', closeTermsModal);
+        termsModal.addEventListener('click', e => e.target === termsModal && closeTermsModal());
+        
+        // --- Cierre de ambos modales con la tecla Escape ---
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                if (modal.classList.contains('visible')) {
+                    cerrarModalProducto();
+                }
+                if (termsModal.classList.contains('visible')) {
+                    closeTermsModal();
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>
