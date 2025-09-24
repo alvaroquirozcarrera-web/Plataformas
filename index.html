@@ -640,17 +640,17 @@
             }
         }
 
-        /* Marca de agua */
-        .watermark-overlay::after {
-            content: '';
+        /* Marca de agua para videos */
+        .video-watermark::after {
+            content: 'Prohibida su reproducción';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
             z-index: 5;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 1.4em;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2em;
             font-weight: 600;
             text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.7);
             pointer-events: none;
@@ -659,8 +659,8 @@
             line-height: 1.2;
         }
 
-        .product-card .watermark-overlay::after {
-            font-size: 1em;
+        .product-card .video-watermark::after {
+            font-size: 0.9em;
             font-weight: 500;
         }
 
@@ -757,11 +757,11 @@
                 font-size: 1.5em;
             }
 
-            .watermark-overlay::after {
-                font-size: 1.1em;
+            .video-watermark::after {
+                font-size: 1em;
             }
 
-            .product-card .watermark-overlay::after {
+            .product-card .video-watermark::after {
                 font-size: 0.8em;
             }
         }
@@ -813,7 +813,7 @@
                 <button class="modal-close-button" aria-label="Cerrar modal">&times;</button>
             </header>
             <div class="modal-body">
-                <div class="modal-media-container watermark-overlay">
+                <div class="modal-media-container video-watermark">
                     <img id="modal-image" src="" alt="Imagen del producto">
                     <iframe id="modal-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <div class="video-overlay"></div>
@@ -1131,8 +1131,12 @@
                     card.tabIndex = 0;
                     card.style.animationDelay = `${productosPagina.indexOf(producto) * 80}ms`;
                     
+                    // Determinar si es un video para agregar la marca de agua
+                    const esVideo = producto.tipo === "video" || producto.tipo === "video-local";
+                    const watermarkClass = esVideo ? "video-watermark" : "watermark-overlay";
+                    
                     card.innerHTML = `
-                        <div class="card-media-container watermark-overlay">
+                        <div class="card-media-container ${watermarkClass}">
                             ${mediaContent}
                             ${producto.precio ? `<span class="card-price">${producto.precio}</span>` : ""}
                             <div class="video-overlay"></div>
@@ -1350,3 +1354,4 @@
         });
     </script>
 </body>
+</html>
